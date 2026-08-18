@@ -9,7 +9,7 @@ jobs:
   test-release-gate:
     runs-on: ubuntu-latest
     steps:
-      - name: TDS identity: 24f2007883@ds.study.iitm.ac.in
+      - name: 'TDS identity: 24f2007883@ds.study.iitm.ac.in'
         run: echo "Verifying identity"
 
       - name: Checkout repository
@@ -19,23 +19,4 @@ jobs:
         run: |
           curl -X POST "https://tds-week7-q1.vercel.app/release-gate" \
             -H "Content-Type: application/json" \
-            -d '{
-                  "target": "preview",
-                  "event": "push",
-                  "ref": "refs/heads/main",
-                  "workflow": {
-                    "trigger": "push",
-                    "permissions": {"contents": "read", "packages": "write", "id-token": "none"},
-                    "testsPassed": true,
-                    "matrixComplete": true,
-                    "failFast": false,
-                    "actions": [{"owner": "actions", "name": "checkout", "ref": "v4"}]
-                  },
-                  "image": {
-                    "multistage": true,
-                    "runsAsRoot": false,
-                    "secretMode": "none",
-                    "criticalVulnerabilities": 0,
-                    "digestPinned": true
-                  }
-                }'
+            -d '{"target":"preview","event":"push","ref":"refs/heads/main","workflow":{"trigger":"push","permissions":{"contents":"read","packages":"write","id-token":"none"},"testsPassed":true,"matrixComplete":true,"failFast":false,"actions":[{"owner":"actions","name":"checkout","ref":"v4"}]},"image":{"multistage":true,"runsAsRoot":false,"secretMode":"none","criticalVulnerabilities":0,"digestPinned":true}}'
