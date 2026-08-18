@@ -1,0 +1,41 @@
+name: TDS GA7 Release Gate
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-release-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: TDS identity: 24f2007883@ds.study.iitm.ac.in
+        run: echo "Verifying identity for TDS GA7"
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Test Release Gate Endpoint
+        run: |
+          curl -X POST "${{ secrets.SERVICE_URL }}/release-gate" \
+            -H "Content-Type: application/json" \
+            -d '{
+                  "target": "preview",
+                  "event": "push",
+                  "ref": "refs/heads/main",
+                  "workflow": {
+                    "trigger": "push",
+                    "permissions": {"contents": "read", "packages": "write", "id-token": "none"},
+                    "testsPassed": true,
+                    "matrixComplete": true,
+                    "failFast": false,
+                    "actions": [{"owner": "actions", "name": "checkout", "ref": "v4"}]
+                  },
+                  "image": {
+                    "multistage": true,
+                    "runsAsRoot": false,
+                    "secretMode": "none",
+                    "criticalVulnerabilities": 0,
+                    "digestPinned": true
+                  }
+                }'
