@@ -10,14 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: TDS identity: 24f2007883@ds.study.iitm.ac.in
-        run: echo "Verifying identity for TDS GA7"
+        run: echo "Verifying identity"
 
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Test Release Gate Endpoint
         run: |
-          curl -X POST "${{ secrets.SERVICE_URL }}/release-gate" \
+          curl -X POST "https://tds-week7-q1.vercel.app/release-gate" \
             -H "Content-Type: application/json" \
             -d '{
                   "target": "preview",
